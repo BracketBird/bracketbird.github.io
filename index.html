@@ -1,1189 +1,583 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BracketBirdCode — Software Engineer Portfolio</title>
-    <link rel="shortcut icon" href="./logo.svg" type="image/x-icon">
-    <meta name="description"
-        content="BracketBird / BracketBirdCode — Software Engineer portfolio: projects, skills, experience, testimonials, contact." />
-    <style>
-        :root {
-            --bg: #171717;
-            --panel: #1f1f1f;
-            --text: #ffffff;
-            --muted: #c9c9c9;
-            --accent: #00e6ff;
-            /* Cyan */
-            --accent-2: #ff2fb3;
-            /* Magenta */
-            --ring: 0 0 0 2px color-mix(in oklab, var(--accent) 60%, transparent);
-            --radius: 18px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        html,
-        body {
-            height: 100%
-        }
-
-        body {
-            margin: 0px;
-            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-            background: radial-gradient(1400px 800px at 80% -40%, color-mix(in oklab, var(--accent) 10%, transparent), transparent),
-                radial-gradient(800px 600px at -10% 10%, color-mix(in oklab, var(--accent-2) 10%, transparent), transparent),
-                var(--bg);
-            color: var(--text);
-            background-repeat: no-repeat;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        a {
-            color: inherit
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 20px
-        }
-
-        /* Scroll progress */
-        .progress {
-            position: fixed;
-            inset: 0 auto auto 0;
-            height: 4px;
-            width: 0;
-            background: linear-gradient(90deg, var(--accent), var(--accent-2));
-            z-index: 1000
-        }
-
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            background: rgba(23, 23, 23, .7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #2a2a2a
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px 0
-        }
-
-        /* ==== BASE STYLING ==== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        /* === HAMBURGER BUTTON === */
-        .menu-btn {
-            font-size: 1.8rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: inherit;
-            display: none;
-            /* hidden by default */
-        }
-
-        /* === SLIDE-IN MOBILE MENU === */
-        .nav-menu {
-            position: fixed;
-            top: 70px;
-            right: 0;
-            width: 75%;
-            max-width: 300px;
-
-            /* ✅ Make height account for the 70px header */
-            height: calc(100vh - 70px);
-
-            background: var(--bg);
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 2rem;
-
-            /* ✅ Enable scrolling for overflow */
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-
-            /* Add padding so bottom buttons aren't flush against the edge */
-            padding-bottom: 2rem;
-
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 100;
-        }
-
-        .nav-menu.show {
-            transform: translateX(0);
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .cta {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            letter-spacing: .4px
-        }
-
-        .logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            display: grid;
-            place-items: center;
-            background: #171717;
-            box-shadow: var(--shadow)
-        }
-
-        .logo img {
-            width: 40px;
-            height: 40px
-        }
-
-        nav a {
-            padding: 10px 12px;
-            border-radius: 12px;
-            color: var(--muted);
-            text-decoration: none;
-            font-weight: 600
-        }
-
-        nav a:hover {
-            color: var(--text);
-            background: #242424
-        }
-
-        .cta {
-            display: flex;
-            gap: 10px;
-            align-items: center
-        }
-
-        .btn {
-            border: none;
-            cursor: pointer;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-weight: 700
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #111
-        }
-
-        .projects-grid .btn-primary {
-            padding: 10px;
-            border-radius: var(--radius);
-            font-weight: 700;
-        }
-
-        .btn-ghost {
-            background: #232323;
-            color: var(--text);
-            border: 1px solid #2f2f2f
-        }
-
-        /* Hero */
-        .hero {
-            padding: 80px 0 40px;
-            position: relative;
-            margin: auto;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.15fr .85fr;
-            gap: 30px;
-            align-items: center
-        }
-
-        .kicker {
-            color: var(--accent);
-            font-weight: 800;
-            letter-spacing: .12em;
-            text-transform: uppercase
-        }
-
-        h1 {
-            font-size: clamp(32px, 3.4vw, 56px);
-            line-height: 1.15;
-            margin: .2em 0 .4em;
-        }
-
-        .lead {
-            color: var(--muted);
-            font-size: clamp(16px, 1.8vw, 19px)
-        }
-
-        .chiprow {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 18px 0 0
-        }
-
-        .chip {
-            border: 1px solid #2e2e2e;
-            background: #202020;
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-weight: 600;
-            color: #ddd
-        }
-
-        .hero-card {
-            padding: 22px;
-            border-radius: var(--radius);
-            background: linear-gradient(180deg, #1f1f1f, #191919);
-            border: 1px solid #2a2a2a;
-            box-shadow: var(--shadow)
-        }
-
-        .metric {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 10px 0
-        }
-
-        .metric strong {
-            font-size: 22px
-        }
-
-        /* Section */
-        section {
-            padding: 64px 0
-        }
-
-        section h2 {
-            font-size: clamp(24px, 2.4vw, 34px);
-            margin: 0 0 14px
-        }
-
-        .sub {
-            color: var(--muted);
-            margin: 0 0 24px
-        }
-
-        /* Skills */
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px
-        }
-
-        .skill {
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: #1e1e1e;
-            border: 1px solid #2b2b2b;
-            position: relative;
-            isolation: isolate
-        }
-
-        .skill::after {
-            content: "";
-            position: absolute;
-            inset: -1px;
-            z-index: -1;
-            border-radius: inherit;
-            background: conic-gradient(from 180deg, color-mix(in oklab, var(--accent) 40%, transparent), transparent 30%, color-mix(in oklab, var(--accent-2) 40%, transparent) 60%, transparent 85%);
-            filter: blur(12px);
-            opacity: .25;
-            transition: opacity .3s ease
-        }
-
-        .skill:hover::after {
-            opacity: .6
-        }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px
-        }
-
-        .project-card {
-            padding: 18px;
-            border-radius: var(--radius);
-            background: linear-gradient(180deg, #1f1f1f, #191919);
-            border: 1px solid #2a2a2a;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden
-        }
-
-        .project-card h3 {
-            margin: .2em 0 .3em
-        }
-
-        .project-card p {
-            color: var(--muted)
-        }
-
-        .project-card::before {
-            content: "";
-            position: absolute;
-            inset: auto -40% -40% auto;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 30%, transparent), transparent 70%);
-            transform: rotate(25deg)
-        }
-
-        /* Experience */
-        .timeline {
-            position: relative;
-            margin: 22px 0 0;
-            padding-left: 18px
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 6px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(var(--accent), var(--accent-2))
-        }
-
-        .experience-item {
-            background: #1f1f1f;
-            border: 1px solid #2a2a2a;
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin: 14px 0
-        }
-
-        .experience-item h3 {
-            margin: .2em 0
-        }
-
-        .experience-item span {
-            color: var(--accent);
-            font-weight: 800
-        }
-
-        .experience-item p {
-            color: var(--muted);
-            margin: .3em 0 0
-        }
-
-        .testimonials-section {
-            width: 100vw;
-            overflow: hidden;
-            padding-left: 10px;
-            padding-right: 10px;
-        
-
-            color: var(--text);
-            padding: 0;
-            /* removed padding */
-        }
-
-        .testrail {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            cursor: grab;
-            gap: 1rem;
-            /* indicates grabbable */
-            user-select: none;
-            scroll-padding-left: 0;
-            /* ensure snap starts at edge */
-        }
-
-        .testrail:active {
-            cursor: grabbing;
-        }
-
-        /* Scrollbar styling */
-        .testrail::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .testrail::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .testrail::-webkit-scrollbar-thumb {
-            background-color: transparent;
-            border-radius: var(--radius);
-        }
-.testimonials {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 7.5vw; /* center first card */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0,0,0,0.2) transparent;
-}
-
-.testimonials::-webkit-scrollbar {
-    height: 8px;
-}
-
-.testimonials::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius: 4px;
-}
-        .testimonial {
-    scroll-snap-align: center;  /* center cards */
-    flex: 0 0 85vw;             /* 85% of viewport */
-    margin: 0 1vw;              /* gap between cards */
-    background: var(--panel);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-        .testimonial p {
-            font-size: 1.05rem
-        }
-
-        .testimonial span {
-            display: block;
-            margin-top: 10px;
-            color: var(--muted);
-            font-weight: 700
-        }
-
-
-        /* Dots */
-        /* Dots */
-.dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.dots button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-}
-
-.dots button.active {
-    background: var(--accent);
-}
-        /* Contact */
-        .contact-card {
-            display: grid;
-            grid-template-columns: 1.3fr .7fr;
-            gap: 16px;
-            background: #1f1f1f;
-            border: 1px solid #2a2a2a;
-            border-radius: 18px;
-            padding: 18px
-        }
-
-        form {
-            display: grid;
-            gap: 10px
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            background: #191919;
-            border: 1px solid #2a2a2a;
-            color: var(--text);
-            padding: 12px 14px;
-            border-radius: 12px
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical
-        }
-
-        label {
-            font-weight: 700
-        }
-
-        /* Footer */
-        footer {
-            padding: 36px 0;
-            color: #a9a9a9;
-            border-top: 1px solid #2a2a2a;
-            margin-top: 10px;
-        }
-
-        /* Utilities + animations */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .hidden {
-            opacity: 0;
-            transform: translateY(12px)
-        }
-
-        .show {
-            opacity: 1;
-            transform: none;
-            transition: opacity .6s ease, transform .6s ease
-        }
-
-        @media (max-width: 920px) {
-            .hero-grid {
-                grid-template-columns: 1fr
-            }
-
-            .contact-card {
-                grid-template-columns: 1fr
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .hidden {
-                opacity: 1;
-                transform: none
-            }
-
-            .skill::after {
-                display: none
-            }
-
-            .progress {
-                display: none
-            }
-        }
-
-        /* === RESPONSIVE BEHAVIOR === */
-        /* === MOBILE RESPONSIVENESS (≤ 798px) === */
-        @media (max-width: 798px) {
-            body {
-                overflow-x: hidden;
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
-            }
-
-
-            .container,
-            .hero,
-            .hero-card,
-            .project-card,
-            .experience-item,
-            .contact-card {
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
-                padding: 12px;
-                /* slightly bigger padding for medium screens */
-            }
-
-            /* Typography dynamically scales */
-            h1 {
-                font-size: clamp(24px, 6vw, 40px);
-                line-height: 1.2;
-            }
-
-            h2 {
-                font-size: clamp(18px, 5vw, 28px);
-            }
-
-            .lead,
-            p,
-            span,
-            label {
-                font-size: clamp(14px, 3.5vw, 18px);
-            }
-
-            /* Make nav menu and header mobile-friendly */
-            .nav-menu {
-                width: 100%;
-                max-width: 100%;
-                padding: 1.5rem;
-            }
-
-            .menu-btn {
-                display: block;
-            }
-
-            .nav-desktop,
-            .cta-desktop {
-                display: none;
-            }
-
-            /* Buttons scale nicely */
-            .btn,
-            .btn-primary,
-            .btn-ghost {
-                width: 100%;
-                text-align: center;
-                padding: 10px 12px;
-                font-size: clamp(14px, 4vw, 16px);
-            }
-
-            /* Collapse multi-column layouts to single column */
-            .skills {
-                grid-template-columns: 1fr;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            /* Form inputs shrink gracefully */
-            input,
-            textarea {
-                font-size: clamp(14px, 3.5vw, 16px);
-                padding: 10px;
-            }
-
-            /* Logo shrinks slightly */
-            .logo img {
-                width: clamp(28px, 6vw, 36px);
-                height: clamp(28px, 6vw, 36px);
-            }
-        }
-
-
-        @media (min-width: 769px) {
-            .nav-menu {
-                display: none;
-            }
-
-            /* never show mobile menu on desktop */
-        }
-
-        /* === FIX HORIZONTAL SCROLL ON MOBILE === */
-        html,
-        body {
-            overflow-x: hidden;
-            /* disable horizontal scrolling */
-        }
-
-        * {
-            max-width: 100%;
-            /* force elements to never exceed screen width */
-            box-sizing: border-box;
-        }
-
-        .projects-grid,
-        .skills,
-        .grid-2,
-        .hero-grid,
-        .contact-card,
-        .nav-menu {
-            max-width: 100%;
-        }
-
-        img,
-        video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BracketBirdCode</title>
+<meta name="description" content="BracketBirdCode: Lucas, a software engineer in Newcastle, Australia, building web, mobile, AI and embedded systems.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --ground:#131516;
+    --tile:#1b1b1b;
+    --raise:#202324;
+    --line:#2b2f31;
+    --ink:#eef3f4;
+    --muted:#98a6a9;
+    --faint:#5d6a6d;
+    --cyan:#22e6f2;
+    --cyan-deep:#1b8e90;
+    --cyan-wash:rgba(34,230,242,.08);
+    --display:"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+    --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --wrap:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font:400 16.5px/1.6 var(--body);
+    -webkit-font-smoothing:antialiased;
+    padding-inline:20px;
+  }
+  a{color:inherit}
+  img{max-width:100%;height:auto;display:block}
+  ::selection{background:var(--cyan);color:#061214}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:var(--wrap);margin-inline:auto}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:10;
+    margin-inline:-20px;padding:12px 20px;
+    background:rgba(19,21,22,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{display:flex;align-items:center;gap:24px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 17px/1 var(--display);letter-spacing:-.01em}
+  .brand img{width:38px;height:38px}
+  .brand b{color:var(--cyan);font-weight:700}
+  .nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0}
+  .nav ul a{display:block;padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:14.5px;font-weight:500}
+  .nav ul a:hover{color:var(--ink);background:var(--raise)}
+  .menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:7px 11px;font:600 13px var(--mono);cursor:pointer}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-block:72px 64px}
+  .eyebrow{font:500 13px/1.5 var(--mono);color:var(--cyan);letter-spacing:.02em}
+  .eyebrow .dot{display:inline-block;vertical-align:1px;margin-right:10px;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px var(--cyan-wash)}
+  h1{
+    font:800 clamp(40px,6.4vw,74px)/1 var(--display);
+    letter-spacing:-.035em;margin:22px 0 22px;text-wrap:balance;
+  }
+  h1 .br{font-family:var(--mono);font-weight:400;color:var(--cyan);font-size:.82em;letter-spacing:-.06em}
+  h1 .alias{display:block;color:var(--muted);font-weight:500;font-size:.5em;letter-spacing:-.02em;margin-top:14px}
+  h1 .alias em{font-style:normal;color:var(--ink)}
+  .lede{font-size:18.5px;color:var(--muted);max-width:56ch;margin:0 0 30px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;
+    font:600 15px/1 var(--body);text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--tile);
+    cursor:pointer;transition:border-color .15s, transform .15s;
+  }
+  .btn:hover{border-color:var(--cyan-deep);transform:translateY(-1px)}
+  .btn.primary{background:var(--cyan);border-color:var(--cyan);color:#061214}
+  .btn.primary:hover{background:#5ff0f7}
+
+  .perch{position:relative;display:grid;place-items:center}
+  .perch img{width:min(100%,400px);filter:drop-shadow(0 30px 60px rgba(34,230,242,.14))}
+  .perch img{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+
+  .focus{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px;padding:0;list-style:none}
+  .focus li{font:500 13px/1 var(--mono);padding:8px 11px;border:1px solid var(--line);border-radius:7px;color:var(--muted)}
+  .focus li::before{content:"#";color:var(--cyan-deep);margin-right:4px}
+
+  /* ---------- stats strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:14px;background:var(--tile);overflow:hidden}
+  .stats div{padding:22px 24px;border-left:1px solid var(--line)}
+  .stats div:first-child{border-left:0}
+  .stats strong{display:block;font:700 34px/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stats span{font-size:14px;color:var(--muted)}
+
+  /* ---------- section frame ---------- */
+  section.block{padding-block:96px 8px}
+  .open,.close{font:500 15px/1 var(--mono);color:var(--cyan)}
+  .open span{color:var(--faint)}
+  .close{color:var(--faint);margin-top:44px}
+  .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin:14px 0 36px}
+  h2{font:800 clamp(32px,4.4vw,48px)/1.05 var(--display);letter-spacing:-.03em;margin:0;text-wrap:balance}
+  .head p{color:var(--muted);margin:0;max-width:46ch}
+  .inset{padding-left:clamp(0px,3vw,28px);border-left:1px dashed var(--line)}
+
+  /* ---------- about ---------- */
+  .about{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+  .about p{margin:0 0 16px;max-width:62ch;color:#cfd8da}
+  .about p:first-child{font-size:20px;color:var(--ink);line-height:1.5}
+  .code{
+    margin:0;background:var(--tile);border:1px solid var(--line);border-radius:14px;
+    font:400 14px/1.75 var(--mono);color:var(--muted);overflow-x:auto;
+  }
+  .code .bar{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .code .bar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+  .code .bar small{margin-left:auto;font-size:12px;color:var(--faint)}
+  .code pre{margin:0;padding:18px 20px;font:inherit}
+  .k{color:#c792ea}.p{color:var(--cyan)}.s{color:#c3e88d}.c{color:var(--faint)}
+
+  /* ---------- skills ---------- */
+  .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .skill{background:var(--tile);padding:26px 24px 24px}
+  .skill h3{font:700 20px/1.2 var(--display);margin:0 0 8px;display:flex;align-items:center;gap:10px}
+  .skill h3 .mono{font-size:13px;color:var(--cyan);font-weight:400}
+  .skill p{margin:0 0 16px;color:var(--muted);font-size:15px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none}
+  .tags li{font:500 12.5px/1 var(--mono);padding:6px 9px;border-radius:6px;background:var(--cyan-wash);color:#aef6fa}
+
+  /* ---------- projects ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .filters button{
+    font:500 13.5px/1 var(--mono);padding:9px 13px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--muted);cursor:pointer;
+  }
+  .filters button:hover{color:var(--ink);border-color:var(--faint)}
+  .filters button[aria-pressed="true"]{background:var(--cyan);border-color:var(--cyan);color:#061214}
+  .filters button .n{opacity:.6;margin-left:4px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{
+    display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:14px;
+    background:var(--tile);border:1px solid var(--line);transition:border-color .15s, transform .15s;
+  }
+  .card:hover{border-color:var(--cyan-deep);transform:translateY(-2px)}
+  .card.feature{grid-column:span 3;display:grid;grid-template-columns:auto 1fr auto;gap:8px 28px;align-items:center;padding:26px 28px;
+    background:linear-gradient(120deg, rgba(34,230,242,.07), transparent 55%), var(--tile)}
+  .card.feature h3{font-size:28px}
+  .card.feature .glyph{grid-row:span 3;width:64px;height:64px;border-radius:14px;display:grid;place-items:center;background:var(--cyan-wash);font:600 22px var(--mono);color:var(--cyan)}
+  .card.feature .go{grid-row:span 3;grid-column:3}
+  .card h3{font:700 21px/1.15 var(--display);letter-spacing:-.015em;margin:0}
+  .card p{margin:0;color:var(--muted);font-size:15px;flex:1}
+  .card .meta{font:400 12.5px/1.5 var(--mono);color:var(--faint)}
+  .card .meta b{color:var(--cyan-deep);font-weight:600}
+  .go{align-self:flex-start;font:600 13.5px/1 var(--mono);color:var(--cyan);text-decoration:none;padding:8px 0}
+  .go:hover{text-decoration:underline;text-underline-offset:4px}
+  .go.none{color:var(--faint)}
+  .empty{color:var(--muted);font-family:var(--mono)}
+
+  /* ---------- experience ---------- */
+  .timeline{list-style:none;margin:0;padding:0;display:grid}
+  .timeline li{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line)}
+  .timeline li:last-child{border-bottom:1px solid var(--line)}
+  .timeline time{font:500 14px/1.6 var(--mono);color:var(--cyan);font-variant-numeric:tabular-nums}
+  .timeline time.past{color:var(--muted)}
+  .timeline h3{font:700 21px/1.25 var(--display);margin:0 0 2px;letter-spacing:-.01em}
+  .timeline .org{font-weight:600;color:var(--muted);margin:0 0 8px;font-size:15px}
+  .timeline p{margin:0;color:#cfd8da;max-width:64ch}
+  .now{display:inline-block;margin-left:8px;font:600 11px/1 var(--mono);padding:4px 7px;border-radius:5px;background:var(--cyan);color:#061214;vertical-align:3px;letter-spacing:.04em;text-transform:uppercase}
+
+  /* ---------- quotes ---------- */
+  .quotes{columns:2 340px;column-gap:16px}
+  blockquote{
+    break-inside:avoid;margin:0 0 16px;padding:24px;border-radius:14px;background:var(--tile);border:1px solid var(--line);
+  }
+  blockquote p{margin:0 0 16px;font-size:16.5px;line-height:1.6}
+  blockquote p::before{content:"// ";font-family:var(--mono);color:var(--cyan-deep)}
+  blockquote footer{font-size:14px;color:var(--muted);line-height:1.45}
+  blockquote footer strong{display:block;color:var(--ink);font-weight:600}
+
+  /* ---------- contact ---------- */
+  .contact{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+  .contact .panel{padding:32px;border-radius:16px;background:var(--tile);border:1px solid var(--line)}
+  .contact .big{font:800 clamp(28px,3.6vw,40px)/1.1 var(--display);letter-spacing:-.025em;margin:0 0 14px;text-wrap:balance}
+  .contact .panel > p{color:var(--muted);margin:0 0 26px;max-width:48ch}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0;border-top:1px solid var(--line)}
+  .row:last-child{border-bottom:1px solid var(--line)}
+  .row .lbl{font:500 12.5px/1 var(--mono);color:var(--faint);width:74px;text-transform:uppercase;letter-spacing:.06em}
+  .row .val{font:500 16px var(--mono);color:var(--ink);user-select:all;word-break:break-all;flex:1;min-width:0}
+  .row a.val{user-select:auto;text-decoration:none}
+  .row a.val:hover{color:var(--cyan)}
+  .copy{font:600 12.5px/1 var(--mono);padding:8px 11px;border-radius:7px;border:1px solid var(--line);background:var(--raise);color:var(--ink);cursor:pointer}
+  .copy:hover{border-color:var(--cyan-deep)}
+  .contact .mark{display:grid;place-items:center;background:
+      radial-gradient(circle at 50% 45%, rgba(34,230,242,.12), transparent 60%), var(--tile)}
+  .contact .mark img{width:min(260px,70%)}
+  .contact .mark p{font:500 14px/1.5 var(--mono);color:var(--muted);text-align:center;margin:8px 0 0}
+
+  footer.site{padding-block:72px 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font:400 13.5px/1.5 var(--mono)}
+  footer.site b{color:var(--cyan);font-weight:400}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;padding-top:40px;gap:24px}
+    .perch{order:-1;justify-items:start}
+    .perch img{width:170px}
+    .about,.contact{grid-template-columns:1fr}
+    .skills{grid-template-columns:1fr 1fr}
+    .grid{grid-template-columns:1fr 1fr}
+    .card.feature{grid-column:span 2}
+    .contact .mark{display:none}
+  }
+  @media (max-width:760px){
+    .menu-btn{display:block}
+    .nav ul{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;padding:10px 20px 16px;background:var(--ground);border-bottom:1px solid var(--line)}
+    .nav.open ul{display:flex}
+    .nav ul a{padding:12px 8px;font-size:16px}
+  }
+  @media (max-width:620px){
+    body{font-size:16px}
+    .stats{grid-template-columns:1fr 1fr}
+    .stats div:nth-child(3){border-left:0}
+    .stats div:nth-child(n+3){border-top:1px solid var(--line)}
+    .skills,.grid{grid-template-columns:1fr}
+    .card.feature{grid-column:auto;grid-template-columns:1fr;padding:22px}
+    .card.feature .glyph,.card.feature .go{grid-row:auto;grid-column:auto}
+    .card.feature .glyph{width:48px;height:48px;font-size:17px}
+    .card.feature h3{font-size:23px}
+    .timeline li{grid-template-columns:1fr;gap:6px}
+    .contact .panel{padding:24px}
+    .row .lbl{width:100%}
+    section.block{padding-top:72px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation:none!important;transition:none!important}
+  }
+</style>
 </head>
-
 <body>
-    <div class="progress" id="progress"></div>
-    <header>
-        <div class="container nav">
-            <div class="brand">
-                <div class="logo" aria-hidden="true">
-                    <img src="./logo.svg" alt="BracketBird Logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 
-                </div>
-                <span>BracketBird<span style="color:var(--accent-2)">Code</span></span>
-            </div>
-            <!-- HAMBURGER BUTTON (only visible on mobile) -->
-            <button id="menuToggle" class="menu-btn" aria-label="Open Menu" aria-expanded="false">
-                ☰
-            </button>
+<nav class="nav" id="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="logo.svg" alt="" width="38" height="38"><span>Bracket<b>Bird</b>Code</span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navList">{ menu }</button>
+    <ul id="navList">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#quotes">Quotes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-            <!-- NORMAL NAV (shown on desktop) -->
-            <nav class="nav-desktop" aria-label="Primary">
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#testimonials">Quotes</a>
-                <a href="#contact">Contact</a>
-            </nav>
+<main class="wrap" id="top">
 
-            <div class="cta-desktop">
-                <button class="btn btn-ghost" id="copyEmail" aria-label="Copy email">Copy Email</button>
-                <a class="btn btn-primary" href="#projects">View Work</a>
-            </div>
+  <header class="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Software Engineer · Newcastle, AU · Open to work</div>
+      <h1><span class="br">{</span>Hi, I’m Lucas.<span class="br">}</span>
+        <span class="alias">Online I go by <em>BracketBirdCode</em>.</span></h1>
+      <p class="lede">I design and build reliable software and hardware: full-stack web, cross-platform apps, embedded electronics and applied AI. I care about clarity, performance and whether the thing actually helps someone.</p>
+      <div class="actions">
+        <a class="btn primary" href="#projects">See my projects</a>
+        <a class="btn" href="#contact">Get in touch</a>
+        <a class="btn" href="https://github.com/BracketBird" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <ul class="focus">
+        <li>full-stack-web</li><li>flutter</li><li>python-ml</li><li>computer-vision</li><li>embedded-iot</li>
+      </ul>
+    </div>
+    <div class="perch"><img src="logo.svg" alt="BracketBirdCode logo: a white bird with a code-bracket wing perched on curly braces" width="400" height="400"></div>
+  </header>
 
-            <!-- MOBILE SLIDE-IN MENU -->
-            <nav id="primaryNav" class="nav-menu" aria-label="Primary">
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#testimonials">Quotes</a>
-                <a href="#contact">Contact</a>
-                <div class="cta">
-                    <button class="btn btn-ghost" id="copyEmailMobile" aria-label="Copy email">Copy Email</button>
-                    <a class="btn btn-primary" href="#projects">View Work</a>
-                </div>
-            </nav>
+  <div class="stats" aria-label="At a glance">
+    <div><strong>17</strong><span>projects shipped or prototyped</span></div>
+    <div><strong>6</strong><span>industry &amp; research roles</span></div>
+    <div><strong>8</strong><span>references from mentors</span></div>
+    <div><strong>2022</strong><span>building since</span></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="block" id="about">
+    <div class="open">about <span>{</span></div>
+    <div class="inset">
+      <div class="head"><h2>Engineer by trade, builder by habit.</h2></div>
+      <div class="about">
+        <div>
+          <p>I’m a software engineer at SAPHI Engineering in Newcastle, and I’ve been building things since high school, when a Big Picture project put me in a lab with University of Newcastle lecturers.</p>
+          <p>Most of my work sits where people meet technology: a sensor glove that turns gestures into speech, portfolio platforms for schools, computer-vision pipelines that count what cameras see, and small developer tools that remove busywork.</p>
+          <p>I like the whole path from sketch to shipped product. I prototype quickly, test properly, and keep code clean enough that the next person can pick it up.</p>
         </div>
-    </header>
-
-    <main>
-        <!-- Hero -->
-        <section class="hero container" id="about">
-            <div class="hero-grid">
-                <div>
-                    <div class="kicker hidden">Software Engineer • Newcastle AU</div>
-                    <h1 class="hidden">Hi, I’m Lucas — a.k.a. <span
-                            style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent;">BracketBirdCode</span>.
-                    </h1>
-                    <p class="lead hidden">I design and build reliable software and hardware systems: full‑stack web,
-                        mobile apps, embedded electronics, and applied AI/ML. I care about clarity, performance and
-                        impact.</p>
-                    <div class="chiprow hidden">
-                        <span class="chip">Full‑stack Web</span>
-                        <span class="chip">Flutter/Dart</span>
-                        <span class="chip">Python + ML</span>
-                        <span class="chip">Embedded / IoT</span>
-                    </div>
-                </div>
-                <div class="hero-card hidden" role="group" aria-label="Quick stats">
-                    <div class="metric"><strong>7</strong> public projects</div>
-                    <div class="metric"><strong>25</strong> technical skills</div>
-                    <div class="metric"><strong>8</strong> quotes from collaborators</div>
-                    <div class="metric"><strong>6</strong> experiences</div>
-                    <div class="chiprow">
-                        <button class="btn btn-primary" id="downloadCV">Download CV</button>
-                        <a class="btn btn-ghost" href="#contact">Let’s build</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills -->
-        <section class="container" id="skills">
-            <h2>Skills</h2>
-            <p class="sub">A toolbox spanning software, ML, and hardware — focused on shipping real products.</p>
-            <div class="skills" id="skillsGrid">
-                <!-- Skills injected by JS for easier reuse -->
-            </div>
-        </section>
-
-        <!-- Projects -->
-        <section class="container" id="projects">
-            <h2>Projects</h2>
-            <p class="sub">Selected work — design, engineering, and research.</p>
-            <div class="projects-grid">
-                <article class="project-card hidden">
-                    <h3>Strocoge</h3>
-                    <p>A project I worked on with Associate / Senior Lecturers and an Associate Professor at the
-                        University of Newcastle. Aimed to give a voice to those who need it via a glove embedded with
-                        electronics.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/Strocoge'">Learn more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>Luvium</h3>
-                    <p>A social media website designed, developed and tested to increase collaboration at Cooks Hill
-                        Campus, now being redesigned to suit the uses of The University of Newcastle.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/fic'">Learn more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>AAC App</h3>
-                    <p>An app design for any device from Windows to iPhone, aimed to allow communication for those in
-                        need, improving on current apps through deep customization.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/aaca'">Learn more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>Squidly's Folder Tools</h3>
-                    <p>A Python app with a suite of developer and ML utilities for everyday tasks you shouldn’t have to
-                        Google — without the sketchy websites.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/Squidly-s_Folder_Tools'">Learn
-                        more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>Babel-Search</h3>
-                    <p>A word‑hunting game set in the infinite Library of Babel. Find real words hidden in random pages,
-                        race the clock, and score more per letter.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Babel-Search/Babel-Search.github.io'">Learn
-                        more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>BPE-Flower</h3>
-                    <p>An editable web graph for Big Picture Education — a clean, digital way for teachers and students
-                        to track progress and goals.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/BPE-Flower'">Learn more</button>
-                </article>
-                <article class="project-card hidden">
-                    <h3>UConSoft</h3>
-                    <p>A spin‑out from Luvium. Refocused on universities and students, helping with marketing, student
-                        portfolios, and WIL selection.</p>
-                    <button class="btn-primary"
-                        onclick="window.location.href='https://github.com/Squidly1408/UConSoft'">Learn more</button>
-                </article>
-            </div>
-        </section>
-
-        <!-- Experience -->
-        <section class="container" id="experience">
-            <h2>Experience</h2>
-            <p class="sub">Learning by building — in industry, at uni, and with communities.</p>
-            <div class="timeline">
-                <div class="experience-item hidden">
-                    <h3>Software Engineer level 2 | SAPHI Engineering</h3>
-                    <span>2023 – Present</span>
-                    <p>I work at and completed an internship at a leading tech‑agnostic solution provider in Newcastle
-                        and one of the most influential ICT companies in Australia.</p>
-                </div>
-                <div class="experience-item hidden">
-                    <h3>Freelance Software Developer | Big Picture Education</h3>
-                    <span>2025 – 2025</span>
-                    <p>I built a Java app for Big Picture Education to help teachers and students track their progress.
-                    </p>
-                </div>
-                <div class="experience-item hidden">
-                    <h3>Big Picture Education Intern | University of Newcastle, Australia</h3>
-                    <span>2023 – 2024</span>
-                    <p>Worked with Associate Lecturers, Associate Professors, and Senior Lecturers on projects at a
-                        state‑of‑the‑art university based in Newcastle.</p>
-                </div>
-                <div class="experience-item hidden">
-                    <h3>School Based Intern | NuBots</h3>
-                    <span>2024 – 2024</span>
-                    <p>Completed a shadow day with the team that builds robots for international competition, learning
-                        core robotics concepts.</p>
-                </div>
-                <div class="experience-item hidden">
-                    <h3>School Based Intern | RedCrow</h3>
-                    <span>2024 – 2024</span>
-                    <p>Shadowed at RedCrow (Maitland), worked on testing, and highlighted multiple bugs in production
-                        code.</p>
-                </div>
-                <div class="experience-item hidden">
-                    <h3>School Based Intern | Clickk Newcastle</h3>
-                    <span>2022 – 2022</span>
-                    <p>Worked on designing and developing websites, learning processes and best practices from
-                        experienced staff.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials / Quotes -->
-        <section class="testimonials-section" id="testimonials">
-            <h2>Quotes</h2>
-            <p class="sub">What collaborators, lecturers and mentors say.</p>
-            <div class="testrail" id="testrail" aria-live="polite">
-
-                <div class="testimonial">
-                    <p>"Lucas is a rare kind of student, motivated, innovative, and determined to make a positive impact
-                        on the world around him. It is a rare joy to find a student with such focus and drive, I look
-                        forward to seeing his education and career prosper."</p>
-                    <span>- Dr. Jacqueline D Bailey, Lecturer — Computing & IT, School of Information and Physical
-                        Sciences, The University of Newcastle</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Lucas was an absolute pleasure to deal with. He assisted us with some website and graphic design
-                        tasks. He performed them to a very high standard. I have no hesitation in recommending Lucas to
-                        any local design or development companies."</p>
-                    <span>- Chris Chapman, Director of Clickk Pty Ltd</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Lucas is a talented future engineer with a bright future ahead. He has a passion for technology
-                        and it shows!"</p>
-                    <span>- Liam, CCO of SAPHI Engineering</span>
-                </div>
-                <div class="testimonial">
-                    <p>"As Lucas's teacher when he began his journey in project-based learning, I had the pleasure of
-                        seeing him demonstrate incredible adaptability, a deep thirst for knowledge, and a keen ability
-                        to solve problems… showcasing both intellect and a commitment to positive impact."</p>
-                    <span>- Thomas Deane, Head Teacher of Well Being, Newcastle High School</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Lucas contributed an interactive JavaScript module for the Big Picture Learning Australia's
-                        website. He was a pleasure to work with — highly responsive to feature requests and his code was
-                        clean, effective and elegant."</p>
-                    <span>- Joe Wickert, CTO Big Picture Learning Australia</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Lucas is very intelligent and self-managed. He is very process driven and provides a high
-                        standard of work."</p>
-                    <span>- Chris Chapman, Director of Clickk Pty Ltd</span>
-                </div>
-                <div class="testimonial">
-                    <p>"I met Lucas when he was a high school student conducting a project under the Big Picture
-                        program… Lucas demonstrated deep knowledge of both the hardware and software, plus rare
-                        enthusiasm and curiosity."</p>
-                    <span>- Dr. Alexandre Mendes, Senior Lecturer — Computing & IT, University of Newcastle</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Lucas's willingness to help and support others, strive for personal excellence and take on
-                        feedback make him an excellent learner. It has been a pleasure to see his growth."</p>
-                    <span>- Nick Willis, Ex Deputy Campus Leader, Cooks Hill Campus, Newcastle High School</span>
-                </div>
-            </div>
-            <div class="dots" role="tablist" aria-label="Testimonials" id="dots"></div>
-        </section>
-
-        <!-- Contact -->
-        <section class="container" id="contact">
-            <h2>Contact</h2>
-            <p class="sub">Got a challenge worth building? Let’s talk.</p>
-            <div class="contact-card">
-                <form id="contactForm" novalidate>
-                    <div class="grid-2">
-                        <div>
-                            <label for="name">Name</label>
-                            <input id="name" name="name" autocomplete="name" required />
-                        </div>
-                        <div>
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" autocomplete="email" required />
-                        </div>
-                    </div>
-                    <div>
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <div class="chiprow">
-                        <button class="btn btn-primary" type="submit">Send</button>
-                        <span id="formMsg" role="status" aria-live="polite"></span>
-                    </div>
-                </form>
-                <div>
-                    <div class="hero-card">
-                        <h3>Hire / Collaborate</h3>
-                        <p class="sub">Based in Newcastle, Australia. Open to remote and hybrid work.
-                        </p>
-                        <div class="chiprow">
-                            <div class="chip">Email: <a href="mailto:bracketbirdcode@gmail.com"><strong
-                                        id="emailText">bracketbirdcode@Gmail.com</strong></a></div>
-                            <div class="chip">GitHub: <a
-                                    href="https://github.com/BracketBird"><strong>BracketBird</strong></a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container"
-            style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
-            <div>© <span id="year"></span> BracketBirdCode</div>
-            <img src="./logo.svg" alt="BracketBird Logo" style="width: 50px; height: 50px;">
-            <div>Made with <span aria-hidden="true">{ }</span> & focused craftsmanship.</div>
+        <div class="code" role="img" aria-label="Profile summary written as a code object">
+          <div class="bar"><i></i><i></i><i></i><small>profile.ts</small></div>
+<pre><span class="k">const</span> lucas = {
+  alias:    <span class="s">"BracketBirdCode"</span>,
+  role:     <span class="s">"Software Engineer L2"</span>,
+  based:    <span class="s">"Newcastle, NSW"</span>,
+  focus:    [<span class="s">"AI"</span>, <span class="s">"Flutter"</span>, <span class="s">"Web"</span>, <span class="s">"Embedded"</span>],
+  remote:   <span class="p">true</span>,
+  status:   <span class="s">"building cool things"</span>,
+}; <span class="c">// ship it</span></pre>
         </div>
-    </footer>
+      </div>
+    </div>
+    <div class="close">}</div>
+  </section>
 
-    <script>
-        const menuBtn = document.getElementById('menuToggle')
-        const navMenu = document.getElementById('primaryNav')
+  <!-- SKILLS -->
+  <section class="block" id="skills">
+    <div class="open">skills <span>{</span></div>
+    <div class="inset">
+      <div class="head"><h2>The toolbox.</h2><p>Software, machine learning and hardware, chosen for shipping real products.</p></div>
+      <div class="skills">
+        <div class="skill"><h3><span class="mono">&lt;/&gt;</span>Frontend</h3><p>Responsive interfaces with clean layouts and purposeful animation.</p>
+          <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>React</li><li>SVG</li></ul></div>
+        <div class="skill"><h3><span class="mono">[ ]</span>Apps</h3><p>Cross-platform mobile and desktop apps with solid testing.</p>
+          <ul class="tags"><li>Flutter</li><li>Dart</li><li>Firebase</li><li>Java</li></ul></div>
+        <div class="skill"><h3><span class="mono">( )</span>AI &amp; Vision</h3><p>Detection, tracking, annotation and automation systems.</p>
+          <ul class="tags"><li>Python</li><li>OpenCV</li><li>YOLO</li><li>ML</li></ul></div>
+        <div class="skill"><h3><span class="mono">=&gt;</span>Backend</h3><p>APIs, automation scripts, server tools and data workflows.</p>
+          <ul class="tags"><li>Python</li><li>PHP</li><li>REST APIs</li><li>XML</li><li>Git</li></ul></div>
+        <div class="skill"><h3><span class="mono">~&gt;</span>Embedded</h3><p>Microcontrollers, sensors and Raspberry Pi prototypes.</p>
+          <ul class="tags"><li>Arduino</li><li>Raspberry Pi</li><li>Sensors</li><li>IoT</li></ul></div>
+        <div class="skill"><h3><span class="mono">!!</span>Quality</h3><p>Testing, debugging and keeping production code reliable.</p>
+          <ul class="tags"><li>Unit tests</li><li>Widget tests</li><li>Playwright</li><li>QA</li></ul></div>
+      </div>
+    </div>
+    <div class="close">}</div>
+  </section>
 
-        menuBtn.addEventListener('click', () => {
-            const isOpen = navMenu.classList.toggle('show')
-            menuBtn.setAttribute('aria-expanded', isOpen)
-            menuBtn.textContent = isOpen ? '✕' : '☰'
-        })
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="open">projects <span>{</span></div>
+    <div class="inset">
+      <div class="head"><h2>Selected work.</h2><p>Design, engineering and research. Most have a demo video on YouTube.</p></div>
 
-        // Close menu when clicking a link
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('show')
-                menuBtn.setAttribute('aria-expanded', false)
-                menuBtn.textContent = '☰'
-            })
-        })
-        // ===== Accessibility / helpers =====
-        const $ = (q, ctx = document) => ctx.querySelector(q)
-        const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q))
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" data-f="all" aria-pressed="true">all<span class="n"></span></button>
+        <button type="button" data-f="web" aria-pressed="false">web<span class="n"></span></button>
+        <button type="button" data-f="edu" aria-pressed="false">edutech<span class="n"></span></button>
+        <button type="button" data-f="ai" aria-pressed="false">ai-vision<span class="n"></span></button>
+        <button type="button" data-f="hw" aria-pressed="false">accessibility-hw<span class="n"></span></button>
+        <button type="button" data-f="tools" aria-pressed="false">dev-tools<span class="n"></span></button>
+      </div>
 
-        // Scroll progress
-        const prog = document.getElementById('progress')
-        const updateProgress = () => {
-            const sTop = window.scrollY
-            const docH = document.body.scrollHeight - window.innerHeight
-            prog.style.width = (docH ? (sTop / docH) * 100 : 0) + '%'
-        }
-        updateProgress();
-        document.addEventListener('scroll', updateProgress, { passive: true })
+      <div class="grid" id="grid">
+        <article class="card feature" data-cat="edu web">
+          <div class="glyph">{ }</div>
+          <h3>BPLIO</h3>
+          <a class="go" href="https://youtu.be/1aO_-rDJqW4" target="_blank" rel="noopener">Watch demo ↗</a>
+          <p>A central portfolio platform for Big Picture schools: student work, moderation, administration, security and portfolio publishing in one place.</p>
+          <div class="meta"><b>Full-stack</b> · Authentication · EduTech</div>
+        </article>
+        <article class="card feature" data-cat="hw">
+          <div class="glyph">~&gt;</div>
+          <h3>Strocoge</h3>
+          <a class="go" href="https://youtu.be/vCFSp7htgdQ" target="_blank" rel="noopener">Watch demo ↗</a>
+          <p>A wearable glove that reads hand position and movement and turns gestures into speech. Built with lecturers and an Associate Professor at the University of Newcastle.</p>
+          <div class="meta"><b>Embedded</b> · Sensors · Assistive tech</div>
+        </article>
 
-        // Intersection animations
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('show');
-                    io.unobserve(e.target)
-                }
-            })
-        }, { threshold: .1 })
-        $$('.hidden').forEach(el => io.observe(el))
+        <article class="card" data-cat="ai">
+          <h3>Red Car Counter</h3>
+          <p>A distributed vision system that detects, classifies and counts red vehicles across several video feeds, aggregating results in real time.</p>
+          <div class="meta"><b>Computer vision</b> · Python · Distributed</div>
+          <a class="go" href="https://youtu.be/yZVEDrDuBUg" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>SQDLC-CAD</h3>
+          <p>A free browser CAD app for creating, editing and viewing 3D models through an approachable web interface.</p>
+          <div class="meta"><b>3D modelling</b> · Graphics · Web</div>
+          <a class="go" href="https://youtu.be/yOc5Qmen83A" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="tools web">
+          <h3>Traceboard</h3>
+          <p>A browser vector-tracing tool that turns reference images into clean, editable SVG with precision and automatic tracing.</p>
+          <div class="meta"><b>SVG</b> · JavaScript · PWA</div>
+          <a class="go" href="https://youtu.be/vlkh-b1KmuE" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>Bindary</h3>
+          <p>A gamified uni productivity app. Finish a task and earn a procedurally generated collectible book or poem.</p>
+          <div class="meta"><b>React</b> · Gamification · Procedural gen</div>
+          <a class="go" href="https://youtu.be/0sRIl39ioxk" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>Furni4</h3>
+          <p>A client-side 2D and 3D room planner. Design spaces to real-world scale and test furniture layouts before you lift anything.</p>
+          <div class="meta"><b>2D/3D</b> · Coordinate systems · UI/UX</div>
+          <a class="go" href="https://youtu.be/pFhiWvCw5aU" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>PHOTOLIO</h3>
+          <p>An in-browser portfolio builder for photographers. Pick from 8 design systems, drop in photos and preview a finished site live, no account needed.</p>
+          <div class="meta"><b>Web</b> · UI/UX · Photography</div>
+          <a class="go" href="https://youtu.be/EfHg61KVkv4" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="ai edu">
+          <h3>Academic Integrity Hub</h3>
+          <p>Reviews written work for originality, AI use and plagiarism, and gives an overall assessment to support academic integrity.</p>
+          <div class="meta"><b>AI</b> · Web · EduTech</div>
+          <a class="go" href="https://youtu.be/XC3VeSo6Npo" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="edu web">
+          <h3>BPL Slides</h3>
+          <p>A presentation and exhibition builder that helps Big Picture Learning students showcase projects, achievements and growth.</p>
+          <div class="meta"><b>Web</b> · UI/UX · EduTech</div>
+          <a class="go" href="https://youtu.be/Fh9B-iP904Y" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="edu web">
+          <h3>BPE-Flower</h3>
+          <p>An editable digital version of the IBPLC graph, so Big Picture students and teachers can track, edit and present learning progress.</p>
+          <div class="meta"><b>SVG manipulation</b> · JavaScript · EduTech</div>
+          <span class="go none">Demo coming soon</span>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>Luvium</h3>
+          <p>A social platform that helps students find projects, share knowledge and connect. Started at Cooks Hill Campus, now being redesigned for the University of Newcastle.</p>
+          <div class="meta"><b>Full-stack</b> · Social · Collaboration</div>
+          <a class="go" href="https://youtu.be/m1rAp8qKUaw" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="edu web">
+          <h3>UConSoft</h3>
+          <p>A spin-out from Luvium focused on universities: student marketing, portfolios and work-integrated-learning selection.</p>
+          <div class="meta"><b>Web</b> · Higher-ed · Product</div>
+          <a class="go" href="https://github.com/BracketBird" target="_blank" rel="noopener">GitHub ↗</a>
+        </article>
+        <article class="card" data-cat="hw">
+          <h3>AAC App</h3>
+          <p>An augmentative communication app for any device, from Windows to iPhone, that improves on current apps through deep customisation.</p>
+          <div class="meta"><b>Flutter</b> · Cross-platform · Accessibility</div>
+          <a class="go" href="https://github.com/BracketBird" target="_blank" rel="noopener">GitHub ↗</a>
+        </article>
+        <article class="card" data-cat="tools">
+          <h3>Flutter CLI</h3>
+          <p>A command-line toolkit that automates repetitive Flutter tasks and simplifies common project workflows.</p>
+          <div class="meta"><b>Dev tooling</b> · Automation · Python</div>
+          <a class="go" href="https://youtu.be/cRZzSxMHpBs" target="_blank" rel="noopener">Watch demo ↗</a>
+        </article>
+        <article class="card" data-cat="tools ai">
+          <h3>Folder Tools</h3>
+          <p>A Python suite of developer and ML utilities for everyday jobs you shouldn’t have to search for, without the sketchy websites.</p>
+          <div class="meta"><b>Python</b> · ML utilities · Desktop</div>
+          <a class="go" href="https://github.com/BracketBird" target="_blank" rel="noopener">GitHub ↗</a>
+        </article>
+        <article class="card" data-cat="web">
+          <h3>Babel-Search</h3>
+          <p>A word-hunting game set in the infinite Library of Babel. Find real words in random pages, race the clock, score more per letter.</p>
+          <div class="meta"><b>Game</b> · JavaScript · Procedural text</div>
+          <a class="go" href="https://github.com/BracketBird" target="_blank" rel="noopener">GitHub ↗</a>
+        </article>
+      </div>
+      <p class="empty" id="empty" hidden>// nothing here yet</p>
+    </div>
+    <div class="close">}</div>
+  </section>
 
-        // Dynamic skills injection (25 skills)
-        const skills = [
-            'Adafruit', 'Ai', 'Arduino', 'AutoDesk Eagle', 'CSS', 'Dart', 'Firebase Auth', 'Firebase', 'Flutter', 'Fusion360', 'Git', 'GitHub', 'HTML', 'Java', 'JavaScript', 'Linux - Debian', 'MicroPython', 'Pandas', 'Python', 'PyTorch', 'Raspberry Pi', 'SVG', 'TensorFlow', 'Visual Studio', 'Visual Studio Code'
-        ]
-        const skillsGrid = document.getElementById('skillsGrid')
-        skills.forEach(txt => {
-            const div = document.createElement('div')
-            div.className = 'skill hidden'
-            div.textContent = txt
-            skillsGrid.appendChild(div)
-            io.observe(div)
-        })
+  <!-- EXPERIENCE -->
+  <section class="block" id="experience">
+    <div class="open">experience <span>{</span></div>
+    <div class="inset">
+      <div class="head"><h2>Learning by building.</h2><p>In industry, at university and with local teams.</p></div>
+      <ol class="timeline">
+        <li><time>2023 – now</time><div>
+          <h3>Software Engineer, Level 2 <span class="now">Current</span></h3><p class="org">SAPHI Engineering</p>
+          <p>Joined through an internship at a tech-agnostic solutions provider in Newcastle, one of the most influential ICT companies in Australia.</p></div></li>
+        <li><time class="past">2025</time><div>
+          <h3>Freelance Software Developer</h3><p class="org">Big Picture Education</p>
+          <p>Built an interactive tool to help teachers and students track learning progress.</p></div></li>
+        <li><time class="past">2024</time><div>
+          <h3>School-based Intern</h3><p class="org">NUbots</p>
+          <p>Shadowed the team building robots for international competition and learned core robotics concepts.</p></div></li>
+        <li><time class="past">2024</time><div>
+          <h3>School-based Intern</h3><p class="org">RedCrow, Maitland</p>
+          <p>Worked on testing and found several bugs in production code.</p></div></li>
+        <li><time class="past">2023 – 2024</time><div>
+          <h3>Big Picture Education Intern</h3><p class="org">University of Newcastle</p>
+          <p>Worked with Associate Lecturers, Senior Lecturers and Associate Professors on research projects, including Strocoge.</p></div></li>
+        <li><time class="past">2022</time><div>
+          <h3>School-based Intern</h3><p class="org">Clickk Newcastle</p>
+          <p>Designed and developed websites and learned professional process from experienced staff.</p></div></li>
+      </ol>
+    </div>
+    <div class="close">}</div>
+  </section>
 
-const testrail = document.getElementById("testrail");
-const testimonials = document.querySelectorAll(".testimonial");
-const dotsContainer = document.getElementById("dots");
+  <!-- QUOTES -->
+  <section class="block" id="quotes">
+    <div class="open">quotes <span>{</span></div>
+    <div class="inset">
+      <div class="head"><h2>What people say.</h2><p>From lecturers, mentors and the people I’ve built for.</p></div>
+      <div class="quotes">
+        <blockquote><p>Lucas is a rare kind of student, motivated, innovative, and determined to make a positive impact on the world around him. It is a rare joy to find a student with such focus and drive, I look forward to seeing his education and career prosper.</p>
+          <footer><strong>Dr. Jacqueline D Bailey</strong>Lecturer, Computing &amp; IT, University of Newcastle</footer></blockquote>
+        <blockquote><p>Lucas contributed an interactive JavaScript module for the Big Picture Learning Australia’s website. He was a pleasure to work with — highly responsive to feature requests and his code was clean, effective and elegant.</p>
+          <footer><strong>Joe Wickert</strong>CTO, Big Picture Learning Australia</footer></blockquote>
+        <blockquote><p>Lucas is a talented future engineer with a bright future ahead. He has a passion for technology and it shows!</p>
+          <footer><strong>Liam</strong>CCO, SAPHI Engineering</footer></blockquote>
+        <blockquote><p>I met Lucas when he was a high school student conducting a project under the Big Picture program… Lucas demonstrated deep knowledge of both the hardware and software, plus rare enthusiasm and curiosity.</p>
+          <footer><strong>Dr. Alexandre Mendes</strong>Senior Lecturer, Computing &amp; IT, University of Newcastle</footer></blockquote>
+        <blockquote><p>Lucas was an absolute pleasure to deal with. He assisted us with some website and graphic design tasks. He performed them to a very high standard. I have no hesitation in recommending Lucas to any local design or development companies.</p>
+          <footer><strong>Chris Chapman</strong>Director, Clickk Pty Ltd</footer></blockquote>
+        <blockquote><p>As Lucas’s teacher when he began his journey in project-based learning, I had the pleasure of seeing him demonstrate incredible adaptability, a deep thirst for knowledge, and a keen ability to solve problems… showcasing both intellect and a commitment to positive impact.</p>
+          <footer><strong>Thomas Deane</strong>Head Teacher of Wellbeing, Newcastle High School</footer></blockquote>
+        <blockquote><p>Lucas is very intelligent and self-managed. He is very process driven and provides a high standard of work.</p>
+          <footer><strong>Chris Chapman</strong>Director, Clickk Pty Ltd</footer></blockquote>
+        <blockquote><p>Lucas’s willingness to help and support others, strive for personal excellence and take on feedback make him an excellent learner. It has been a pleasure to see his growth.</p>
+          <footer><strong>Nick Willis</strong>Former Deputy Campus Leader, Cooks Hill Campus, Newcastle High School</footer></blockquote>
+      </div>
+    </div>
+    <div class="close">}</div>
+  </section>
 
-// Create dots
-dotsContainer.innerHTML = '';
-testimonials.forEach((_, index) => {
-    const dot = document.createElement("button");
-    dot.addEventListener("click", () => {
-        const card = testimonials[index];
-        const scrollPos = card.offsetLeft - (testrail.clientWidth - card.clientWidth)/2;
-        testrail.scrollTo({ left: scrollPos, behavior: 'smooth' });
+  <!-- CONTACT -->
+  <section class="block" id="contact">
+    <div class="open">contact <span>{</span></div>
+    <div class="inset">
+      <div class="contact">
+        <div class="panel">
+          <h2 class="big">Got something worth building? Let’s talk.</h2>
+          <p>Based in Newcastle, Australia. Open to remote and hybrid roles, freelance work and research collaborations.</p>
+          <div class="row"><span class="lbl">Email</span><a class="val" id="email" href="mailto:bracketbirdcode@gmail.com">bracketbirdcode@gmail.com</a><button class="copy" type="button" id="copyBtn">Copy</button></div>
+          <div class="row"><span class="lbl">GitHub</span><a class="val" href="https://github.com/BracketBird" target="_blank" rel="noopener">github.com/BracketBird ↗</a></div>
+          <div class="row"><span class="lbl">YouTube</span><a class="val" href="https://www.youtube.com/@Squidly1408" target="_blank" rel="noopener">Project demos ↗</a></div>
+        </div>
+        <div class="panel mark">
+          <div><img src="logo.svg" alt="" width="260" height="260"><p>{ perched and ready }</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="close">}</div>
+  </section>
+
+  <footer class="site">
+    <span>© <span id="yr">2026</span> BracketBirdCode · Lucas</span>
+    <span>Made with <b>{ }</b> in Newcastle, AU</span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  // mobile menu
+  var nav=document.getElementById('nav'), btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+  nav.querySelectorAll('ul a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false')})});
+
+  // project filters
+  var cards=[].slice.call(document.querySelectorAll('#grid .card'));
+  var buttons=[].slice.call(document.querySelectorAll('.filters button'));
+  buttons.forEach(function(b){
+    var f=b.dataset.f;
+    var n=f==='all'?cards.length:cards.filter(function(c){return c.dataset.cat.split(' ').indexOf(f)>-1}).length;
+    b.querySelector('.n').textContent=n;
+    b.addEventListener('click',function(){
+      buttons.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+      var shown=0;
+      cards.forEach(function(c){
+        var on=f==='all'||c.dataset.cat.split(' ').indexOf(f)>-1;
+        c.hidden=!on; if(on)shown++;
+        // featured cards only span wide in the full view
+        if(c.dataset.feature||c.classList.contains('feature')){c.dataset.feature='1';c.classList.toggle('feature',f==='all');}
+      });
+      document.getElementById('empty').hidden=shown>0;
     });
-    dotsContainer.appendChild(dot);
-});
+  });
 
-const dots = dotsContainer.querySelectorAll("button");
+  // copy email
+  var cb=document.getElementById('copyBtn'), em=document.getElementById('email');
+  cb.addEventListener('click',function(){
+    var done=function(){cb.textContent='Copied';setTimeout(function(){cb.textContent='Copy'},1600)};
+    var fallback=function(){var r=document.createRange();r.selectNodeContents(em);var s=getSelection();s.removeAllRanges();s.addRange(r);cb.textContent='Selected';};
+    try{navigator.clipboard.writeText(em.textContent).then(done,fallback)}catch(e){fallback()}
+  });
 
-// Update active dot on scroll
-testrail.addEventListener("scroll", () => {
-    let closestIndex = 0;
-    let closestDistance = Infinity;
-
-    testimonials.forEach((card, i) => {
-        const distance = Math.abs((card.offsetLeft + card.offsetWidth/2) - (testrail.scrollLeft + testrail.clientWidth/2));
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = i;
-        }
-    });
-
-    dots.forEach(dot => dot.classList.remove("active"));
-    if (dots[closestIndex]) dots[closestIndex].classList.add("active");
-});
-
-// Initialize first dot
-if (dots[0]) dots[0].classList.add("active");
-
-// Prevent text selection while grabbing
-testrail.addEventListener('mousedown', e => e.preventDefault());
-
-
-        // Copy email
-        const emailText = document.getElementById('emailText').textContent
-        document.getElementById('copyEmail').addEventListener('click', async () => {
-            try { await navigator.clipboard.writeText('bracketbirdcode@gmail.com '); toast('Email copied!') } catch { toast('Copy failed') }
-        })
-
-        // Download CV
-        document.getElementById('downloadCV').addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = './LucasNewman_Resume_Quotes.pdf'; // Path to your PDF
-            link.download = 'LucasNewman_Resume.pdf'; // Name of file when downloaded
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-
-        // Contact form (client-only demo)
-        const form = document.getElementById('contactForm');
-        const formMsg = document.getElementById('formMsg');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(form).entries());
-
-            if (!data.name || !data.email || !data.message) {
-                formMsg.textContent = 'Please complete all fields.';
-                return;
-            }
-
-            // Construct the mailto link
-            const subject = encodeURIComponent(`New message from ${data.name}`);
-            const body = encodeURIComponent(
-                `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
-            );
-            const mailtoLink = `mailto:bracketbirdcode@gmail.com?subject=${subject}&body=${body}`;
-
-            // Open the default email client
-            window.location.href = mailtoLink;
-
-            // Reset form and show confirmation
-            form.reset();
-            formMsg.textContent = 'Thanks! Your email client should open shortly.';
-            setTimeout(() => formMsg.textContent = '', 4000);
-        });
-
-
-        // Tiny toast
-        function toast(msg) {
-            const t = document.createElement('div')
-            t.textContent = msg
-            t.style.cssText = `position:fixed;inset:auto auto 24px 50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#111;padding:10px 14px;border-radius:12px;font-weight:800;box-shadow:var(--shadow);z-index:1001`
-            document.body.appendChild(t)
-            setTimeout(() => t.remove(), 1800)
-        }
-
-        // Footer year
-        document.getElementById('year').textContent = new Date().getFullYear()
-    </script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+})();
+</script>
 </body>
-
 </html>
